@@ -1,134 +1,134 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 import Logo from '@/assets/logo.png';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 
-function Navbar() {
+const navLinks = [
+    { href: '/', label: 'Inicio' },
+    { href: '#nosotros', label: 'Nosotros' },
+    { href: '#servicios', label: 'Servicios' },
+    { href: '#proyectos', label: 'Proyectos' },
+    { href: '#contacto', label: 'Contacto' },
+];
+
+const Navbar: React.FC = () => {
     const [open, setOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const pathname = usePathname();
 
-    const links = [
-        { href: '/', label: 'INICIO' },
-        { href: '/nosotros', label: 'ACERCA DE NOSOTROS' },
-        { href: '/propiedades-en-renta', label: 'PROPIEDADES EN RENTA' },
-        { href: '/lofts', label: 'LOFTS' },
-        { href: '/contacto', label: 'CONTACTO' },
-    ];
-
-    const isActive = (href: string) =>
-        href === '/' ? pathname === '/' : pathname?.startsWith(href);
-
+    // Cerrar con ESC
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', onScroll);
-        return () => window.removeEventListener('scroll', onScroll);
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setOpen(false);
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
     }, []);
 
+    // Bloquear scroll cuando esté abierto (móvil)
     useEffect(() => {
-        setOpen(false);
-    }, [pathname]);
+        if (open) document.body.style.overflow = 'hidden';
+        else document.body.style.overflow = '';
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [open]);
 
     return (
-        <header
-            className={`sticky top-0 z-50 transition-all duration-300 ${
-                scrolled
-                    ? 'bg-[#031a2e]/95 shadow-lg h-16 sm:h-20'
-                    : 'bg-[#031a2e] h-24 sm:h-28'
-            }`}
-        >
-            <nav className="mx-auto w-full max-w-[90rem] px-4 sm:px-6 lg:px-10 flex items-center justify-between h-full">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-3">
+        <header className="w-full flex justify-center fixed top-3 left-0 right-0 z-50 pointer-events-none">
+            <nav className="pointer-events-auto flex items-center justify-between w-[94%] max-w-4xl mx-auto
+            rounded-full border border-white/15 bg-[#050814]/80 backdrop-blur-xl px-3 py-1.5 sm:px-4 sm:py-2
+            md:px-6 md:py-2 shadow-[0_8px_30px_rgba(0,0,0,0.35)] text-white relative">
+                {/* LOGO */}
+                <Link href="/" className="relative h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16">
                     <Image
                         src={Logo}
-                        alt="Luna Arana"
-                        width={scrolled ? 210 : 500}   // más grande
-                        height={scrolled ? 65 : 500}   // más grande
-                        className="h-auto w-auto transition-all duration-300"
+                        alt="Logo"
+                        fill
+                        className="object-contain"
                         priority
                     />
                 </Link>
 
-                {/* Menú Desktop */}
-                <ul className="hidden lg:flex items-center gap-8 xl:gap-12">
-                    {links.map(({ href, label }) => (
-                        <li key={href}>
-                            <Link
-                                href={href}
-                                className={[
-                                    'uppercase tracking-wide transition-colors',
-                                    scrolled
-                                        ? 'text-[13px] xl:text-[14px]'
-                                        : 'text-[14px] xl:text-[15px]',
-                                    'hover:text-orange-400',
-                                    isActive(href) ? 'text-orange-400' : 'text-white/90',
-                                ].join(' ')}
-                            >
-                                {label}
-                            </Link>
-                        </li>
+                {/* LINKS – solo tablet/desktop */}
+                <div className="hidden md:flex items-center gap-6 text-lg font-medium text-slate-200">
+                    {navLinks.map((l) => (
+                        <Link key={l.href} href={l.href} className="hover:text-white transition">
+                            {l.label}
+                        </Link>
                     ))}
-                </ul>
+                </div>
 
-                {/* Botón móvil */}
-                <button
-                    className="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg hover:bg-white/10"
-                    aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-                    onClick={() => setOpen((v) => !v)}
+                {/* Acciones derecha */}
+                <div className="flex items-center gap-2">
+                    {/* BOTÓN CONTACTO (se queda como está) */}
+                    <Link href="https://wa.link/e7cq0m" className="hidden sm:inline-flex">
+                        <button className="rounded-full bg-[#2563eb] px-3 py-1.5 text-[11px] sm:px-5 sm:py-2
+                        sm:text-sm shadow-lg shadow-blue-500/20 hover:bg-[#1d4ed8] transition-colors">
+                            Contacto
+                        </button>
+                    </Link>
+
+                    {/* HAMBURGER SOLO MÓVIL */}
+                    <button onClick={() => setOpen(true)} className="
+                    inline-flex md:hidden h-9 w-9 items-center justify-center rounded-full border border-white/15
+                    bg-black/30 backdrop-blur hover:bg-white/10 transition" aria-label="Abrir menú">
+                        <AiOutlineMenu size={18} />
+                    </button>
+                </div>
+
+                {/* ====== MENÚ MÓVIL (overlay + panel) ====== */}
+                {/* Overlay */}
+                <div
+                    className={`md:hidden fixed inset-0 z-[60] transition ${
+                        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                    }`}
                 >
-                    {open ? (
-                        <HiOutlineX size={26} className="text-white" />
-                    ) : (
-                        <HiOutlineMenu size={26} className="text-white" />
-                    )}
-                </button>
+                    <button
+                        className="absolute inset-0 bg-black/60"
+                        aria-label="Cerrar menú"
+                        onClick={() => setOpen(false)}
+                    />
+
+                    {/* Panel */}
+                    <div className={`absolute left-1/2 top-4 w-[92%] max-w-sm -translate-x-1/2
+                    rounded-2xl border border-white/10 bg-[#050814]/95 backdrop-blur-xl
+                    shadow-[0_20px_60px_rgba(0,0,0,0.6)] transition ${open ? 'translate-y-0 opacity-100' 
+                    : '-translate-y-3 opacity-0'}`}>
+                        {/* Header panel */}
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+                            <div className="flex items-center gap-3">
+                                <div className="relative h-9 w-9">
+                                    <Image src={Logo} alt="Logo" fill className="object-contain" />
+                                </div>
+                                <p className="text-sm font-semibold text-white">Menú</p>
+                            </div>
+
+                            <button onClick={() => setOpen(false)}
+                                className="h-9 w-9 rounded-full grid place-items-center border border-white/10
+                                bg-black/30 hover:bg-white/10 transition" aria-label="Cerrar menú">
+                                <AiOutlineClose size={18} />
+                            </button>
+                        </div>
+
+                        {/* Links */}
+                        <div className="px-3 py-3">
+                            <div className="flex flex-col">
+                                {navLinks.map((l) => (
+                                    <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="
+                                    rounded-xl px-3 py-3 text-sm font-medium text-slate-200 hover:bg-white/10
+                                    hover:text-white transition">
+                                        {l.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </nav>
-
-            {/* Overlay */}
-            <button
-                aria-hidden={!open}
-                onClick={() => setOpen(false)}
-                className={[
-                    'lg:hidden fixed inset-0 -z-10 transition-opacity duration-300',
-                    open ? 'opacity-100 backdrop-blur-[2px] bg-black/30' : 'pointer-events-none opacity-0',
-                ].join(' ')}
-            />
-
-            {/* Menú móvil */}
-            <div
-                className={[
-                    'lg:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out',
-                    open ? 'max-h-96' : 'max-h-0',
-                    'border-t border-white/10',
-                    'bg-[#031a2e]/98',
-                ].join(' ')}
-            >
-                <ul className="mx-auto w-full max-w-[90rem] px-4 sm:px-6 lg:px-8 py-2">
-                    {links.map(({ href, label }) => (
-                        <li key={href}>
-                            <Link
-                                href={href}
-                                onClick={() => setOpen(false)}
-                                className={[
-                                    'block w-full uppercase tracking-wide',
-                                    'text-[14px] sm:text-[15px]',
-                                    'py-3 border-b border-white/5 last:border-0',
-                                    'hover:text-orange-400',
-                                    isActive(href) ? 'text-orange-400' : 'text-white/90',
-                                ].join(' ')}
-                            >
-                                {label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
         </header>
     );
-}
+};
 
 export default Navbar;
