@@ -4,7 +4,7 @@ import { RiTeamLine } from "react-icons/ri";
 
 const Nosotros: React.FC = () => {
     return (
-        <section className="relative bg-[#01040b] text-white py-16 sm:py-20 lg:py-24 overflow-x-hidden">
+        <section id="nosotros" className="relative bg-[#01040b] text-white py-16 overflow-x-hidden">
             {/* Glow suave de fondo */}
             <div className="pointer-events-none absolute inset-0 -z-10">
                 <div className="absolute left-1/2 top-[-6rem] h-[20rem] w-[20rem] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[140px]" />
