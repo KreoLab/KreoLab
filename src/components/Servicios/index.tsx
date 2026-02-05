@@ -56,7 +56,7 @@ const services: ServiceItem[] = [
 
 const Servicios: React.FC = () => {
     return (
-        <section className="relative text-white bg-[#01040b] -mt-6 pt-20 pb-20 sm:pt-24 sm:pb-24 overflow-x-hidden">
+        <section id="servicios" className="relative text-white bg-[#01040b] -mt-6 pt-20 pb-20 sm:pt-24 sm:pb-24 overflow-x-hidden">
             {/* FONDO */}
             <div className="pointer-events-none absolute inset-0 -z-10">
                 <div className="absolute top-[-8rem] left-1/2 -translate-x-1/2 h-[28rem] w-[28rem] rounded-full bg-[#0ea5e9]/20 blur-[120px]" />

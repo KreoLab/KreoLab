@@ -3,7 +3,7 @@ import { FiCode, FiGlobe, FiZap } from "react-icons/fi";
 
 function SomosKreoLab() {
     return (
-        <section className="bg-[#01040b] text-white py-16 sm:py-20 lg:py-24">
+        <section className="bg-[#01040b] text-white py-16">
             <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:flex-row lg:items-center lg:gap-16">
                 {/* CARD IZQUIERDA */}
                 <div className="w-full lg:w-1/2">

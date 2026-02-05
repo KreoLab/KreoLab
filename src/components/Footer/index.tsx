@@ -1,9 +1,8 @@
 'use client';
-
 import React, { useState } from 'react';
 import Logo from '@/assets/logo.png';
 import Link from 'next/link';
-import {Mail, Phone, MapPin, Linkedin, Instagram, Facebook, Twitter,} from 'lucide-react';
+import {Mail, Phone, MapPin,} from 'lucide-react';
 import Image from "next/image";
 
 export default function Footer() {
@@ -43,36 +42,22 @@ export default function Footer() {
                             impulsan el crecimiento.
                         </p>
 
-                        <div className="flex items-center gap-3">
-                            <SocialIcon href="#" label="LinkedIn">
-                                <Linkedin className="h-4 w-4" />
-                            </SocialIcon>
-                            <SocialIcon href="#" label="Instagram">
-                                <Instagram className="h-4 w-4" />
-                            </SocialIcon>
-                            <SocialIcon href="#" label="Facebook">
-                                <Facebook className="h-4 w-4" />
-                            </SocialIcon>
-                            <SocialIcon href="#" label="Twitter/X">
-                                <Twitter className="h-4 w-4" />
-                            </SocialIcon>
-                        </div>
                     </div>
 
                     {/* Servicios */}
                     <FooterCol title="Servicios">
-                        <FooterLink href="#">Páginas Web</FooterLink>
-                        <FooterLink href="#">Landing Pages</FooterLink>
-                        <FooterLink href="#">Aplicaciones Web</FooterLink>
-                        <FooterLink href="#">E-Commerce</FooterLink>
+                        <FooterLink href="#servicios">Páginas Web</FooterLink>
+                        <FooterLink href="#servicios">Landing Pages</FooterLink>
+                        <FooterLink href="#servicios">Aplicaciones Web</FooterLink>
+                        <FooterLink href="#servicios">E-Commerce</FooterLink>
                     </FooterCol>
 
                     {/* Empresa */}
                     <FooterCol title="Empresa">
-                        <FooterLink href="#">Quiénes Somos</FooterLink>
-                        <FooterLink href="#">Proyectos</FooterLink>
-                        <FooterLink href="/blog">Servicios</FooterLink>
-                        <FooterLink href="#">Contacto</FooterLink>
+                        <FooterLink href="#nosotros">Nosotros</FooterLink>
+                        <FooterLink href="#proyectos">Proyectos</FooterLink>
+                        <FooterLink href="#servicios">Servicios</FooterLink>
+                        <FooterLink href="#contacto">Contacto</FooterLink>
                     </FooterCol>
 
                     {/* Legal + Contacto */}
@@ -139,33 +124,19 @@ function FooterCol({ title, children }: { title: string; children: React.ReactNo
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
     return (
         <li>
-            <Link
-                href={href}
-                className="text-sm text-white/70 hover:text-white transition"
-            >
+            <Link href={href} className="text-sm text-white/70 hover:text-white transition">
                 {children}
             </Link>
         </li>
     );
 }
 
-function SocialIcon({
-                        href,
-                        label,
-                        children,
-                    }: {
-    href: string;
-    label: string;
-    children: React.ReactNode;
-}) {
+function SocialIcon({href, label, children,}: { href: string; label: string; children: React.ReactNode; }) {
     return (
-        <a
-            href={href}
-            aria-label={label}
+        <a href={href} aria-label={label}
             className="h-9 w-9 rounded-xl bg-white/5 border border-white/10 grid place-items-center hover:bg-white/10 transition"
             target="_blank"
-            rel="noreferrer"
-        >
+            rel="noreferrer">
             {children}
         </a>
     );
